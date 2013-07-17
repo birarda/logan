@@ -8,5 +8,9 @@ module Logan
     attr_accessor :name
     attr_accessor :description
     attr_accessor :completed
+    
+    def to_json
+        { :name => @name, :description => @description }.to_json
+    end
   end  
 end
