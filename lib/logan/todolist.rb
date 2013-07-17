@@ -1,4 +1,5 @@
 require 'logan/HashConstructed'
+require 'logan/todo'
 
 module Logan
   class TodoList
@@ -8,9 +9,21 @@ module Logan
     attr_accessor :name
     attr_accessor :description
     attr_accessor :completed
+    attr_accessor :remaining_todos
+    attr_accessor :completed_todos
     
     def to_json
         { :name => @name, :description => @description }.to_json
+    end
+    
+    def todos=(todo_hash)
+      @remaining_todos = todo_hash['remaining'].map { |h| Logan::Todo.new h }
+      @completed_todos = todo_hash['completed'].map { |h| Logan::Todo.new h }
+    end
+    
+    def todo_with_substring(substring)
+      issue_todo = @remaining_todos.detect{ |t| !t.content.index(substring).nil? }
+      issue_todo ||= @completed_todos.detect { |t| !t.content.index(substring).nil? }
     end
   end  
 end

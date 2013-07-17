@@ -22,6 +22,11 @@ module Logan
       todolists + completed_todolists
     end
     
+    def todolist(list_id)
+      response = Logan::Client.get "/projects/#{@id}/todolists/#{list_id}.json"
+      Logan::TodoList.new response.parsed_response
+    end
+    
     def create_todolist(todolist)
       post_params = {
         :body => todolist.to_json,
