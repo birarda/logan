@@ -10,12 +10,16 @@ module Logan
     
     def todolists
       active_response = Logan::Client.get "/projects/#{@id}/todolists.json"
-      lists_array = active_response.parsed_response.map { |h| Logan::TodoList.new h }
+      lists_array = active_response.parsed_response.map do |h| 
+        Logan::TodoList.new h.merge({ :project_id => @id })
+      end
     end
     
     def completed_todolists
       completed_response = Logan::Client.get "/projects/#{@id}/todolists/completed.json"
-      lists_array = completed_response.parsed_response.map { |h| Logan::TodoList.new h }
+      lists_array = completed_response.parsed_response.map do |h| 
+        Logan::TodoList.new h.merge({ :project_id => @id })
+      end
     end
     
     def all_todolists
@@ -24,7 +28,7 @@ module Logan
     
     def todolist(list_id)
       response = Logan::Client.get "/projects/#{@id}/todolists/#{list_id}.json"
-      Logan::TodoList.new response.parsed_response
+      Logan::TodoList.new response.parsed_response.merge({ :project_id => @id })
     end
     
     def create_todolist(todolist)
@@ -34,7 +38,7 @@ module Logan
       }
           
       response = Logan::Client.post "/projects/#{@id}/todolists.json", post_params
-      Logan::TodoList.new response
+      Logan::TodoList.new response.merge({ :project_id => @id })
     end
   end  
 end
