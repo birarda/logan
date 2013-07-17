@@ -19,7 +19,7 @@ module Logan
       super
     end
     
-    def to_json
+    def post_json
         { :name => @name, :description => @description }.to_json
     end
     
@@ -35,11 +35,21 @@ module Logan
     
     def create_todo(todo)
       post_params = {
-        :body => todo.to_json,
+        :body => todo.post_json,
         :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
       }
        
       response = Logan::Client.post "/projects/#{@project_id}/todolists/#{@id}/todos.json", post_params
+      Logan::Todo.new response
+    end
+    
+    def update_todo(todo)
+      put_params = {
+        :body => todo.put_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+             
+      response = Logan::Client.put "/projects/#{@project_id}/todos/#{todo.id}.json", put_params
       Logan::Todo.new response
     end
   end  

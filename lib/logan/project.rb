@@ -33,7 +33,7 @@ module Logan
     
     def create_todolist(todolist)
       post_params = {
-        :body => todolist.to_json,
+        :body => todolist.post_json,
         :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
       }
           

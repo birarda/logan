@@ -9,11 +9,22 @@ module Logan
     attr_accessor :content
     attr_accessor :completed
     attr_accessor :assignee
+    attr_accessor :due_at
     
-    def to_json
+    def post_json
       {
         :content => @content,
+        :due_at => @due_at,
         :assignee => @assignee.to_hash
+      }.to_json
+    end
+    
+    def put_json
+      { 
+        :content => @content, 
+        :assignee => @assignee.to_hash,
+        :due_at => @due_at,
+        :completed => @completed
       }.to_json
     end
     
