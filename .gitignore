@@ -11,8 +11,12 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+test.rb
 
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
+
+# OS X
+.DS_Store

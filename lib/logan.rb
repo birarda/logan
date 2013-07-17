@@ -1,4 +1,4 @@
-require "httparty"
-Dir[File.dirname(__FILE__) + '/logan/*.rb'].each do |file|
-  require file
-end
+require 'httparty'
+
+require 'logan/client'
+require 'logan/project'
