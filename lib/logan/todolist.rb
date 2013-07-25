@@ -12,6 +12,7 @@ module Logan
     attr_accessor :completed
     attr_accessor :remaining_todos
     attr_accessor :completed_todos
+    attr_accessor :url
     
     def initialize(h)
       @remaining_todos = []
@@ -51,6 +52,10 @@ module Logan
              
       response = Logan::Client.put "/projects/#{@project_id}/todos/#{todo.id}.json", put_params
       Logan::Todo.new response
+    end
+    
+    def delete_todo(todo)
+      response = Logan::Client.delete "/projects/#{@project_id}/todos/#{todo.id}.json"
     end
   end  
 end
