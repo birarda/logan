@@ -16,17 +16,17 @@ module Logan
       self.class.headers 'User-Agent' => user_agent
     end
     
-    # Returns array of projects
+    # get projects from Basecamp API
     # 
-    # @return [Array] array of Logan::Project instances
+    # @return [Array<Logan::Project>] array of {Logan::Project} instances
     def projects
       response = self.class.get '/projects.json'
       response.parsed_response.map { |h| p = Logan::Project.new(h) }
     end
     
-    # Returns array of Todo lists
+    # get active Todo lists for all projects from Basecamp API
     # 
-    # @return [Array] array of Logan::Todolists
+    # @return [Array<Logan::TodoList>] array of {Logan::TodoList} instances
     def todolists
       response = self.class.get '/todolists.json'
       
