@@ -4,6 +4,12 @@ module Logan
   class Client
     include HTTParty
     
+    # Initializes the Logan shared client with information required to communicate with Basecamp
+    #
+    # @param basecamp_id [String] the Basecamp company ID
+    # @param username [String] the username to use for requests
+    # @param password [String] the password to use for the passed username
+    # @param user_agent [String] the user-agent string to include in header of requests
     def initialize(basecamp_id, username, password, user_agent)
       self.class.base_uri "https://basecamp.com/#{basecamp_id}/api/v1"
       self.class.basic_auth username, password
