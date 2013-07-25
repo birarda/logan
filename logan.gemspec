@@ -7,5 +7,6 @@ Gem::Specification.new do |s|
   s.email       = 'logan@birarda.com'
   s.files       = ["lib/logan.rb"]
   s.files      += Dir.glob("lib/logan/*.rb")
-  s.homepage    = 'http://rubygems.org/gems/logan'
+  s.homepage    = 'https://github.com/birarda/logan'
+  s.license     = 'MIT'
 end
