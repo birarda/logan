@@ -16,11 +16,17 @@ module Logan
       self.class.headers 'User-Agent' => user_agent
     end
     
+    # Returns array of projects
+    # 
+    # @return [Array] array of Logan::Project instances
     def projects
       response = self.class.get '/projects.json'
       response.parsed_response.map { |h| p = Logan::Project.new(h) }
     end
     
+    # Returns array of Todo lists
+    # 
+    # @return [Array] array of Logan::Todolists
     def todolists
       response = self.class.get '/todolists.json'
       
