@@ -1,3 +1,6 @@
+# this module is taken from the accepted answer here
+# http://stackoverflow.com/questions/1572660/is-there-a-way-to-initialize-an-object-through-a-hash
+
 module HashConstructed
   
   # initalizes the object by pulling key-value pairs from the hash and 
