@@ -5,8 +5,14 @@ Documentation is [here](http://rubydoc.info/github/birarda/logan/).
 
 ###Examples
 ```ruby
-logan = Logan::Client.new("12345678", "username", "password", "LoganUserAgent (email@example.com)")
-logan.projects
+basecamp_ID = "12345678"
+username = "username"
+password = "password"
+user_agent = "LoganUserAgent (email@example.com)"
+
+logan = Logan::Client.new(basecamp_ID, username, password, user_agent)
+
+basecamp_projects = logan.projects
 ````
 
 ###Logan?
