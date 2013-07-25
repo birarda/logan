@@ -10,9 +10,5 @@ module Logan
     def to_hash
       { :id => @id, :type => "Person" }
     end
-    
-    def post_json
-      self.to_hash.to_json
-    end
   end  
 end
