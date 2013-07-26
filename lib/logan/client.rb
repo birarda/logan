@@ -40,5 +40,10 @@ module Logan
         list
       end
     end
+    
+    def events(since_time, page = 1)
+      response = self.class.get "/events.json?since=#{since_time.to_s}&page=#{page}"
+      response.map { |h| e = Logan::Event.new(h) }
+    end
   end
 end
