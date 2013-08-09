@@ -1,5 +1,7 @@
 Ruby gem to communicate with new Basecamp API.
 
+[![Gem Version](https://badge.fury.io/rb/logan.png)](http://badge.fury.io/rb/logan)
+
 ###Documentation
 Documentation is [here](http://rubydoc.info/github/birarda/logan/).
 
