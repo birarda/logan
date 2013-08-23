@@ -24,7 +24,7 @@ module Logan
       
       if auth_hash.has_key? :access_token
         # clear the basic_auth, if it's set
-        self.class.basic_auth nil
+        self.class.basic_auth nil, nil
                 
         # set the Authorization headers
         self.class.headers "Authorization" => "Bearer #{auth_hash[:access_token]}"
