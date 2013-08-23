@@ -7,13 +7,35 @@ module Logan
     # Initializes the Logan shared client with information required to communicate with Basecamp
     #
     # @param basecamp_id [String] the Basecamp company ID
-    # @param username [String] the username to use for requests
-    # @param password [String] the password to use for the passed username
+    # @param auth_hash [Hash] authorization hash consisting of a username and password combination (:username, :password) or an access_token (:access_token)
     # @param user_agent [String] the user-agent string to include in header of requests
-    def initialize(basecamp_id, username, password, user_agent)
+    def initialize(basecamp_id, auth_hash, user_agent)
       self.class.base_uri "https://basecamp.com/#{basecamp_id}/api/v1"
-      self.class.basic_auth username, password
       self.class.headers 'User-Agent' => user_agent
+      self.auth = auth_hash
+    end
+    
+    # Updates authorization information for Logan shared client
+    # 
+    # @param auth_hash [Hash] authorization hash consisting of a username and password combination (:username, :password) or an access_token (:access_token)
+    def auth=(auth_hash)
+      # symbolize the keys
+      auth_hash = auth_hash.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
+      
+      if auth_hash.has_key? :access_token
+        # clear the basic_auth, if it's set
+        self.class.basic_auth nil
+                
+        # set the Authorization headers
+        self.class.headers "Authorization" => "Bearer #{auth_hash[:access_token]}"
+      elsif auth_hash.has_key?(:username) && auth_hash.has_key?(:password)
+        self.class.basic_auth auth_hash[:username], auth_hash[:password]
+      else
+        raise """
+        Incomplete authorization information passed in authorization hash. 
+        You must have either an :access_token or a username password combination (:username, :password).
+        """
+      end
     end
     
     # get projects from Basecamp API
