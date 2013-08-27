@@ -27,9 +27,12 @@ module Logan
         self.class.basic_auth nil, nil
                 
         # set the Authorization headers
-        self.class.headers "Authorization" => "Bearer #{auth_hash[:access_token]}"
+        self.class.headers.merge!("Authorization" => "Bearer #{auth_hash[:access_token]}")
       elsif auth_hash.has_key?(:username) && auth_hash.has_key?(:password)
         self.class.basic_auth auth_hash[:username], auth_hash[:password]
+        
+        # remove the access_token from the headers, if it exists
+        self.class.headers.reject!{ |k| k == "Authorization" }
       else
         raise """
         Incomplete authorization information passed in authorization hash. 
