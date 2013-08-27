@@ -22,8 +22,8 @@ module Logan
     def put_json
       { 
         :content => @content, 
-        :assignee => @assignee.to_hash,
         :due_at => @due_at,
+        :assignee => @assignee.to_hash,
         :completed => @completed
       }.to_json
     end
