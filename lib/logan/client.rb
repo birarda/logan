@@ -20,7 +20,9 @@ module Logan
     # @param auth_hash [Hash] authorization hash consisting of a username and password combination (:username, :password) or an access_token (:access_token)
     def auth=(auth_hash)
       # symbolize the keys
-      auth_hash = auth_hash.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
+      new_auth_hash = {}
+      auth_hash.each {|k, v| new_auth_hash[k.to_sym] = v}
+      auth_hash = new_auth_hash
       
       if auth_hash.has_key? :access_token
         # clear the basic_auth, if it's set
