@@ -10,9 +10,11 @@ module Logan
     attr_accessor :name
     attr_accessor :description
     attr_accessor :completed
-    attr_accessor :remaining_todos
-    attr_accessor :completed_todos
+    attr_accessor :remaining_count
+    attr_accessor :completed_count
     attr_accessor :url
+    attr_writer :remaining_todos
+    attr_writer :completed_todos
     
     # intializes a todo list by calling the HashConstructed initialize method and 
     # setting both @remaining_todos and @completed_todos to empty arrays
@@ -24,6 +26,41 @@ module Logan
     
     def post_json
         { :name => @name, :description => @description }.to_json
+    end
+    
+    # refreshes the data for this todo list from the API
+    def refresh
+      response = Logan::Client.get "/projects/#{@project_id}/todolists/#{@id}.json"
+      initialize(response.parsed_response)
+    end
+    
+    # returns the array of remaining todos - potentially synchronously downloaded from API
+    #  
+    # @return [Array<Logan::Todo>] Array of remaining todos for this todo list
+    def remaining_todos
+      if @remaining_todos.empty? && @remaining_count > 0
+        refresh
+      end
+      
+      return @remaining_todos
+    end
+    
+    # returns the array of completed todos - potentially synchronously downloaded from API
+    #  
+    # @return [Array<Logan::Todo>] Array of completed todos for this todo list
+    def completed_todos
+      if @completed_todos.empty? && @completed_count > 0
+        refresh
+      end
+      
+      return @completed_todos
+    end
+    
+    # returns an array of all todos, completed and remaining - potentially synchronously downloaded from API
+    #  
+    # @return [Array<Logan::Todo>] Array of completed todos for this todo list
+    def todos
+      remaining_todos + completed_todos
     end
     
     # assigns the {#remaining_todos} and {#completed_todos} from the associated keys
