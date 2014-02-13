@@ -34,7 +34,7 @@ module Logan
         self.class.basic_auth auth_hash[:username], auth_hash[:password]
         
         # remove the access_token from the headers, if it exists
-        self.class.headers.reject!{ |k| k == "Authorization" }
+        self.class.headers.reject!{ |k, v| k == "Authorization" }
       else
         raise """
         Incomplete authorization information passed in authorization hash. 

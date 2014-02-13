@@ -67,10 +67,11 @@ module Logan
     # in the passed hash
     # 
     # @param [Hash] todo_hash hash possibly containing todos under 'remaining' and 'completed' keys
+    # @return [Array<Logan::Todo>] array of remaining and completed todos for this list
     def todos=(todo_hash)
-      @remaining_todos = todo_hash['remaining'].map { |h| Logan::Todo.new h }
-      @completed_todos = todo_hash['completed'].map { |h| Logan::Todo.new h }
-      return nil
+      @remaining_todos = todo_hash['remaining'].map { |h| Logan::Todo.new h.merge({ :project_id => @project_id }) }
+      @completed_todos = todo_hash['completed'].map { |h| Logan::Todo.new h.merge({ :project_id => @project_id }) }
+      return @remaining_todos + @completed_todos
     end
     
     # searches the remaining and completed todos for the first todo with the substring in its content

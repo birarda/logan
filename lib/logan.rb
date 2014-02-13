@@ -1,6 +1,7 @@
 require 'httparty'
 require 'json'
 
+require 'logan/comment'
 require 'logan/client'
 require 'logan/event'
 require 'logan/person'
