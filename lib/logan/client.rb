@@ -75,6 +75,7 @@ module Logan
 
     def people
       response = self.class.get "/people.json"
+      response.parsed_response.map { |h| p = Logan::Person.new(h)}
     end
   end
 end
