@@ -57,5 +57,28 @@ module Logan
       response = Logan::Client.post "/projects/#{@id}/todolists.json", post_params
       Logan::TodoList.new response.merge({ :project_id => @id })
     end
+
+    def accesses
+      response = Logan::Client.get "/projects/#{@id}/accesses.json"
+      response.parsed_response.map { |h| p = Logan::Person.new(h) }
+    end
+
+    def add_user_by_id(id)
+      post_params = {
+        :body => { ids: [id] }.to_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+
+      response = Logan::Client.post "/projects/#{@id}/accesses.json", post_params
+    end
+
+    def add_user_by_email(email)
+      post_params = {
+        :body => { email_addresses: [email] }.to_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+
+      response = Logan::Client.post "/projects/#{@id}/accesses.json", post_params
+    end
   end  
 end
