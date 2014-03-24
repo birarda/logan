@@ -74,7 +74,8 @@ module Logan
     end
 
     def people
-      response = self.class.get "/people.json"
+      response = self.class.get "/events.json?since=#{since_time.to_s}&page=#{page}"
+      response.map { |h| e = Logan::Event.new(h) }
     end
   end
 end
