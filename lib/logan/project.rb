@@ -57,5 +57,10 @@ module Logan
       response = Logan::Client.post "/projects/#{@id}/todolists.json", post_params
       Logan::TodoList.new response.merge({ :project_id => @id })
     end
+
+    def accesses
+      response = Logan::Client.get "/projects/#{@id}/accesses.json"
+      response.parsed_response.map { |h| p = Logan::Person.new(h) }
+    end
   end  
 end
