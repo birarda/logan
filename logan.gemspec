@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.files      += Dir.glob("lib/logan/*.rb")
   s.homepage    = 'https://github.com/birarda/logan'
   s.license     = 'MIT'
-  s.required_ruby_version = '~> 1.8.7'
+  s.required_ruby_version = '~> 1.9.3'
   
   s.add_runtime_dependency 'httparty', '0.11.0'
   s.add_runtime_dependency 'json', '~> 1.8'
