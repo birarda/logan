@@ -16,7 +16,7 @@ module Logan
 
   class AccessDeniedError < Error
     def initialize
-      super :access_denied, "You are now allowed to access this resource."
+      super :access_denied, "You are not allowed to access this resource."
     end
   end
 
