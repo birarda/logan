@@ -60,10 +60,12 @@ module Logan
       handle_response(response,
         Proc.new { |h|
           list = Logan::TodoList.new(h)
+          
           # grab the project ID for this list from the url
           list.project_id = list.url.scan( /projects\/(\d+)/).last.first
+          
           # return the list so this method returns an array of lists
-          return list
+          list
         }
       )
     end
