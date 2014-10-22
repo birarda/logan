@@ -19,7 +19,7 @@ module Logan
       {
         :content => @content,
         :due_at => @due_at,
-        :assignee => (@assignee.nil? || @assignee.empty?) ? nil : @assignee.to_hash
+        :assignee => @assignee.nil? ? nil : @assignee.to_hash
       }.to_json
     end
 
@@ -27,7 +27,7 @@ module Logan
       {
         :content => @content,
         :due_at => @due_at,
-        :assignee => (@assignee.nil? || @assignee.empty?) ? nil : @assignee.to_hash,
+        :assignee => @assignee.nil? ? nil : @assignee.to_hash,
         :position => (@position.nil? || @position.empty?) ? 99  : @position,
         :completed => @completed
       }.to_json
