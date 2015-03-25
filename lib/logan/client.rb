@@ -52,6 +52,14 @@ module Logan
       handle_response(response, Proc.new {|h| Logan::Project.new(h) })
     end
 
+    # get project templatess from Basecamp API
+    #
+    # @return [Array<Logan::ProjectTemplate>] array of {Logan::ProjectTemplate} instances
+    def project_templates
+      response = self.class.get '/project_templates.json'
+      handle_response(response, Proc.new {|h| Logan::ProjectTemplate.new(h) })
+    end
+
     # get active Todo lists for all projects from Basecamp API
     #
     # @return [Array<Logan::TodoList>] array of {Logan::TodoList} instances
@@ -60,10 +68,10 @@ module Logan
       handle_response(response,
         Proc.new { |h|
           list = Logan::TodoList.new(h)
-          
+
           # grab the project ID for this list from the url
           list.project_id = list.url.scan( /projects\/(\d+)/).last.first
-          
+
           # return the list so this method returns an array of lists
           list
         }
