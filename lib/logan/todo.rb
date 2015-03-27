@@ -14,6 +14,7 @@ module Logan
     attr_reader :assignee
     attr_accessor :due_at
     attr_accessor :position
+    attr_accessor :app_url
 
     def post_json
       {
@@ -28,7 +29,7 @@ module Logan
         :content => @content,
         :due_at => @due_at,
         :assignee => @assignee.nil? ? nil : @assignee.to_hash,
-        :position => (@position.nil? || @position.empty?) ? 99  : @position,
+        :position => (@position.nil? || @position.to_s.empty?) ? 99  : @position,
         :completed => @completed
       }.to_json
     end

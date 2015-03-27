@@ -96,6 +96,15 @@ module Logan
       response = Logan::Client.post "/projects/#{@id}/accesses.json", post_params
     end
 
+    def add_client_by_id(id)
+      post_params = {
+        :body => { ids: [id] }.to_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+
+      response = Logan::Client.post "/projects/#{@id}/client_accesses.json", post_params
+    end
+
     def add_user_by_email(email)
       post_params = {
         :body => { email_addresses: [email] }.to_json,
