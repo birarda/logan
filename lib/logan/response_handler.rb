@@ -2,7 +2,9 @@ module Logan
   module ResponseHandler
     def handle_response(response, block)
       if success?(response.response)
-        response.parsed_response.map { |h| block.call(h) }
+        response.parsed_response.map do |h|
+          block.call( h.merge({json_raw: h.to_json}) )
+        end
       else
         handle_error(response.response)
       end

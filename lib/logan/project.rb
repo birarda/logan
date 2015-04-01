@@ -1,9 +1,11 @@
 require 'logan/HashConstructed'
 require 'logan/todolist'
+require 'logan/response_handler'
 
 module Logan
   class Project
     include HashConstructed
+    include ResponseHandler
 
     attr_accessor :id
     attr_accessor :name
@@ -39,7 +41,6 @@ module Logan
       }
 
       response = Logan::Client.post "/projects/#{@id}/publish.json", post_params
-      Logan::Project.new response
     end
 
     # get completed todo lists for this project from Basecamp API
@@ -139,5 +140,78 @@ module Logan
       response = Logan::Client.post "/projects/#{@id}/messages.json", post_params
       Logan::Project.new response
     end
+
+
+    # returns the array of remaining todos - potentially synchronously downloaded from API
+    #
+    # @return [Array<Logan::Todo>] Array of remaining todos for this todo list
+    def remaining_todos &block
+      return @remaining_todos if @remaining_todos
+      remaining_todos! &block
+    end
+
+    def remaining_todos! &block
+      @remaining_todos = []
+      if block_given?
+        page = 1
+        while true
+
+          response = Logan::Client.get "/projects/#{@id}/todos/remaining.json?page=#{page}"
+          list = handle_response(response, Proc.new {|h| Logan::Todo.new(h.merge({ :project_id => @id })) })
+          @remaining_todos << list
+          page += 1
+          break if list.size < 50
+        end
+        @remaining_todos = @remaining_todos.flatten
+      else
+        response = Logan::Client.get "/projects/#{@id}/todos/remaining.json"
+        @remaining_todos = handle_response(response, Proc.new {|h| Logan::Todo.new(h.merge({ :project_id => @id })) })
+      end
+      @remaining_todos
+    end
+
+    # returns the array of completed todos - potentially synchronously downloaded from API
+    #
+    # @return [Array<Logan::Todo>] Array of completed todos for this todo list
+    def completed_todos
+      return @completed_todos if @completed_todos
+      completed_todos!
+    end
+
+    def completed_todos!
+      response = Logan::Client.get "/projects/#{@id}/todos/completed.json"
+
+      @completed_todos = handle_response(response, Proc.new {|h| Logan::Todo.new(h.merge({ :project_id => @id })) })
+    end
+
+    # returns the array of trashed todos - potentially synchronously downloaded from API
+    #
+    # @return [Array<Logan::Todo>] Array of trashed todos for this todo list
+    def trashed_todos
+      return @trashed_todos if @trashed_todos
+      trashed_todos!
+    end
+
+    def trashed_todos!
+      response = Logan::Client.get "/projects/#{@id}/todos/trashed.json"
+
+      @trashed_todos = handle_response(response, Proc.new {|h| Logan::Todo.new(h.merge({ :project_id => @id })) })
+    end
+
+    # returns the array of todos - potentially synchronously downloaded from API
+    #
+    # @return [Array<Logan::Todo>] Array of todos for this todo list
+    def todos
+      return @todos if @todos
+      todos!
+    end
+
+    def todos!
+      response = Logan::Client.get "/projects/#{@id}/todos.json"
+
+      @todos = handle_response(response, Proc.new {|h| Logan::Todo.new(h.merge({ :project_id => @id })) })
+    end
+
+
   end
 end

@@ -15,6 +15,14 @@ module Logan
     attr_accessor :due_at
     attr_accessor :position
     attr_accessor :app_url
+    attr_accessor :url
+    attr_accessor :trashed
+    attr_accessor :private
+
+    def initialize h
+      super
+      @project_id ||= app_url[/projects\/(\d*)\//, 1].to_i unless app_url.blank?
+    end
 
     def post_json
       {
@@ -32,6 +40,16 @@ module Logan
         :position => (@position.nil? || @position.to_s.empty?) ? 99  : @position,
         :completed => @completed
       }.to_json
+    end
+
+    def save
+      put_params = {
+        :body => put_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+
+      response = Logan::Client.put url, put_params
+      Logan::Todo.new response
     end
 
     # refreshes the data for this todo from the API

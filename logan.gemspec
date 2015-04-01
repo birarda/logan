@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'logan'
-  s.version     = '0.1.5'
+  s.version     = '0.1.6'
   s.date        = Time.now
   s.summary     = "ruby gem to communicate with new Basecamp API"
   s.authors     = ["Stephen Birarda"]
@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'httparty', '0.11.0'
   s.add_runtime_dependency 'json', '~> 1.8'
+  s.add_runtime_dependency 'activesupport'
 
   s.add_development_dependency 'yard', '~> 0.8'
   s.add_development_dependency 'redcarpet', '2.3.0'

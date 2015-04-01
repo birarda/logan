@@ -47,9 +47,12 @@ module Logan
     # get projects from Basecamp API
     #
     # @return [Array<Logan::Project>] array of {Logan::Project} instances
-    def projects
-      response = self.class.get '/projects.json'
-      handle_response(response, Proc.new {|h| Logan::Project.new(h) })
+    def projects( id = nil)
+      if id
+        project_by_id id
+      else
+        all_projects
+      end
     end
 
     # get project templatess from Basecamp API
@@ -79,13 +82,26 @@ module Logan
     end
 
     def events(since_time, page = 1)
-      response = self.class.get "/events.json?since=#{since_time.to_s}&page=#{page}"
+      response = self.class.get "/events.json?since=#{URI.escape since_time.to_formatted_s(:iso8601)}&page=#{page}"
       handle_response(response, Proc.new {|h| Logan::Event.new(h) })
     end
 
     def people
       response = self.class.get "/people.json"
       handle_response(response, Proc.new {|h| Logan::Person.new(h) })
+    end
+
+    private
+    def all_projects
+      response = self.class.get '/projects.json'
+      handle_response(response, Proc.new {|h| Logan::Project.new(h) })
+    end
+
+    def project_by_id id
+      response = self.class.get  "/projects/#{id}.json"
+      project = Logan::Project.new response
+      project.json_raw = response.body
+      project
     end
   end
 end
