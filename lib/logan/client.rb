@@ -91,6 +91,13 @@ module Logan
       handle_response(response, Proc.new {|h| Logan::Person.new(h) })
     end
 
+    def person(id)
+      response = self.class.get  "/people/#{id}.json"
+      person = Logan::Person.new response
+      person.json_raw = response.body
+      person
+    end
+
     private
     def all_projects
       response = self.class.get '/projects.json'
