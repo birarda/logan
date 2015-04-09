@@ -81,5 +81,19 @@ module Logan
     def assignee=(assignee)
       @assignee = assignee.is_a?(Hash) ? Logan::Person.new(assignee) : assignee
     end
+
+    # create a create in this todo list via the Basecamp API
+    #
+    # @param [Logan::Comment] todo the comment instance to create in this todo lost
+    # @return [Logan::Comment] the created comment returned from the Basecamp API
+    def create_comment(comment)
+      post_params = {
+        :body => comment.post_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+
+      response = Logan::Client.post "/projects/#{@project_id}/todos/#{@id}/comments.json", post_params
+      Logan::Comment.new response
+    end
   end
 end
