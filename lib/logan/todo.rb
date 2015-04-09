@@ -22,6 +22,7 @@ module Logan
     def initialize h
       super
       @project_id ||= app_url[/projects\/(\d*)\//, 1].to_i unless app_url.blank?
+      self
     end
 
     def post_json
@@ -49,7 +50,7 @@ module Logan
       }
 
       response = Logan::Client.put url, put_params
-      Logan::Todo.new response
+      initialize response.parsed_response
     end
 
     # refreshes the data for this todo from the API
