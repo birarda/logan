@@ -13,11 +13,7 @@ module HashConstructed
     @attributes = h
     h.each do |k,v|
       next unless respond_to?("#{k}=")
-      vv = v
-      if v.is_a? Hash
-        vv = OpenStruct.new v
-      end
-      send("#{k}=",vv)
+      send("#{k}=",v)
     end
   end
 end
