@@ -24,7 +24,7 @@ module Logan
     def get
       begin
         response = Logan::Client.get eventable.url
-        o = "Logan::#{eventable.type}".constantize.new response.parsed_response
+        o = eval("Logan::#{eventable.type}").new response.parsed_response
         o.json_raw = response.body
         o
       rescue NameError
