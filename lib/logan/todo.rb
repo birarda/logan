@@ -14,6 +14,16 @@ module Logan
     attr_reader :assignee
     attr_accessor :due_at
     attr_accessor :position
+    attr_accessor :app_url
+    attr_accessor :url
+    attr_accessor :trashed
+    attr_accessor :private
+
+    def initialize h
+      super
+      @project_id ||= app_url[/projects\/(\d*)\//, 1].to_i unless app_url.blank?
+      self
+    end
 
     def post_json
       {
@@ -28,9 +38,19 @@ module Logan
         :content => @content,
         :due_at => @due_at,
         :assignee => @assignee.nil? ? nil : @assignee.to_hash,
-        :position => (@position.nil? || @position.empty?) ? 99  : @position,
+        :position => (@position.nil? || @position.to_s.empty?) ? 99  : @position,
         :completed => @completed
       }.to_json
+    end
+
+    def save
+      put_params = {
+        :body => put_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+
+      response = Logan::Client.put url, put_params
+      initialize response.parsed_response
     end
 
     # refreshes the data for this todo from the API
@@ -61,6 +81,20 @@ module Logan
     # @return [Logan::Person] the assignee for this todo
     def assignee=(assignee)
       @assignee = assignee.is_a?(Hash) ? Logan::Person.new(assignee) : assignee
+    end
+
+    # create a create in this todo list via the Basecamp API
+    #
+    # @param [Logan::Comment] todo the comment instance to create in this todo lost
+    # @return [Logan::Comment] the created comment returned from the Basecamp API
+    def create_comment(comment)
+      post_params = {
+        :body => comment.post_json,
+        :headers => Logan::Client.headers.merge({'Content-Type' => 'application/json'})
+      }
+
+      response = Logan::Client.post "/projects/#{@project_id}/todos/#{@id}/comments.json", post_params
+      Logan::Comment.new response
     end
   end
 end
