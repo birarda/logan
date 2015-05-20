@@ -21,7 +21,11 @@ module Logan
 
     def initialize h
       super
-      @project_id ||= app_url[/projects\/(\d*)\//, 1].to_i unless app_url.blank?
+
+      unless app_url.nil? || app_url.blank?
+        @project_id ||= app_url[/projects\/(\d*)\//, 1].to_i
+      end
+
       self
     end
 
