@@ -47,7 +47,7 @@ module Logan
     # get projects from Basecamp API
     #
     # @return [Array<Logan::Project>] array of {Logan::Project} instances
-    def projects( id = nil)
+    def projects(id = nil)
       if id
         project_by_id id
       else
@@ -55,7 +55,7 @@ module Logan
       end
     end
 
-    # get project templatess from Basecamp API
+    # get project templates from Basecamp API
     #
     # @return [Array<Logan::ProjectTemplate>] array of {Logan::ProjectTemplate} instances
     def project_templates
@@ -99,16 +99,16 @@ module Logan
     end
 
     private
-    def all_projects
-      response = self.class.get '/projects.json'
-      handle_response(response, Proc.new {|h| Logan::Project.new(h) })
-    end
+      def all_projects
+        response = self.class.get '/projects.json'
+        handle_response(response, Proc.new {|h| Logan::Project.new(h) })
+      end
 
-    def project_by_id id
-      response = self.class.get  "/projects/#{id}.json"
-      project = Logan::Project.new response
-      project.json_raw = response.body
-      project
-    end
+      def project_by_id id
+        response = self.class.get  "/projects/#{id}.json"
+        project = Logan::Project.new response
+        project.json_raw = response.body
+        project
+      end
   end
 end

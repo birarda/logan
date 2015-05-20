@@ -12,8 +12,5 @@ module Logan
     attr_accessor :subscribers
     attr_accessor :creator
     attr_accessor :comments
-
-
-
   end
 end
