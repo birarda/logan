@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'logan'
-  s.version     = '0.2.1'
+  s.version     = '0.2.2'
   s.date        = Time.now
   s.summary     = "ruby gem to communicate with new Basecamp API"
   s.authors     = ["Stephen Birarda"]
