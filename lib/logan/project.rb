@@ -138,7 +138,7 @@ module Logan
       }
 
       response = Logan::Client.post "/projects/#{@id}/messages.json", post_params
-      Logan::Project.new response
+      Logan::Message.new response
     end
 
 
